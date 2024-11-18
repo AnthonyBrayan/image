@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 
 from src.services.UsersServices import UsersService
-from src.models.PersonModel import Person
+from src.models.UsersModel import Users
 
 main = Blueprint('users_blueprint',__name__)
 
@@ -14,13 +14,13 @@ def get_users():
 @main.route('/',methods=['POST'])
 def post_users():
     print(request)
-    dni = request.json['dni']
-    name_person= request.json['name_person']
-    phone = request.json['phone']
+    name_usuario= request.json['name_usuario']
+    password = request.json['password']
+    fk_id_type_user = request.json['fk_id_type_user']
+    fk_dni = request.json['fk_dni']
 
-    user= (Person(dni, name_person, phone))
-    post_person= UsersService.post_user(user)
-    print(post_person)
+    user= (Users(None,name_usuario, password, fk_id_type_user, fk_dni))
+    post_user= UsersService.post_user(user)
+    print(post_user)
 
-    # print(put_person)
     return 'Esto en la página'
