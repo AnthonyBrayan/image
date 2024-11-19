@@ -45,3 +45,33 @@ class UsersService():
             
         except Exception as ex:
             print(ex)
+
+    @classmethod
+    def put_user(cls, user:Users):
+        try:
+            connection= get_connection()
+
+            with connection.cursor() as cursor:
+                id_user = user.id_user
+                name_usuario= user.name_usuario
+                password = user.password
+                fk_id_type_user= user.fk_id_type_user
+                fk_dni = user.fk_dni
+
+                sql= """
+                UPDATE users 
+                SET name_usuario = %s, password = %s, fk_id_type_user = %s, fk_dni = %s 
+                WHERE id_user = %s;
+                """
+
+                values = (name_usuario, password, fk_id_type_user, fk_dni, id_user)
+
+                cursor.execute(sql,values)
+
+                connection.commit()
+
+                connection.close()
+                return 'Este es el método put, se imprime en consola'
+            
+        except Exception as ex:
+            print(ex)
