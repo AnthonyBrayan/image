@@ -39,3 +39,13 @@ def put_users():
     print(put_user)
 
     return 'Esto en la página'
+
+@main.route('/',methods=['DELETE'])
+def delete_users():
+
+    id_user = request.json['id_user']
+
+    delete_user=UsersService.delete_user(id_user)
+    print(delete_user)
+
+    return 'Esto se ve en la página, DELETE'

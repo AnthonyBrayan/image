@@ -64,6 +64,7 @@ class UsersService():
 
                 encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
 
+                # Placeholders parametrizados: Create for sql query.
                 sql= """
                 UPDATE users 
                 SET name_usuario = %s, password = %s, fk_id_type_user = %s, fk_dni = %s 
@@ -81,3 +82,25 @@ class UsersService():
             
         except Exception as ex:
             print(ex)
+
+    @classmethod
+    def delete_user(cls, id_user: int):
+            try:
+                connection= get_connection()
+
+                with connection.cursor() as cursor:
+
+                    sql = """
+                        DELETE FROM users WHERE users.id_user = %s
+
+                          """
+                    values=(id_user)
+
+                    cursor.execute(sql,values)
+                    connection.commit()
+                    
+                connection.close()
+
+                return 'Este es el método delete, se imprime en consola'
+            except Exception as ex:
+                print(ex)
