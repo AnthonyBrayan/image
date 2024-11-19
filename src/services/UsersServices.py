@@ -3,6 +3,8 @@ from src.database.db_mysql import get_connection;
 #Model
 from src.models.UsersModel import Users
 
+#Werkzeug
+from werkzeug.security import generate_password_hash
 
 class UsersService():
 
@@ -36,8 +38,10 @@ class UsersService():
                 fk_id_type_user= user.fk_id_type_user
                 fk_dni = user.fk_dni
 
+                encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
+
                 cursor.execute("insert into users(id_user, name_usuario, password, fk_id_type_user, fk_dni)" + 
-                               "values ('{0}', '{1}', '{2}', '{3}','{4}');".format(id_user, name_usuario, password, fk_id_type_user, fk_dni))
+                               "values ('{0}', '{1}', '{2}', '{3}','{4}');".format(id_user, name_usuario, encripted_password, fk_id_type_user, fk_dni))
                 connection.commit()
 
                 connection.close()
@@ -58,13 +62,15 @@ class UsersService():
                 fk_id_type_user= user.fk_id_type_user
                 fk_dni = user.fk_dni
 
+                encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
+
                 sql= """
                 UPDATE users 
                 SET name_usuario = %s, password = %s, fk_id_type_user = %s, fk_dni = %s 
                 WHERE id_user = %s;
                 """
 
-                values = (name_usuario, password, fk_id_type_user, fk_dni, id_user)
+                values = (name_usuario, encripted_password, fk_id_type_user, fk_dni, id_user)
 
                 cursor.execute(sql,values)
 
