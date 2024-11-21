@@ -13,14 +13,15 @@ class UsersService():
         try:
             connection= get_connection()
             print(connection)
+            
+            with connection:
+                with connection.cursor() as cursor:
+                    cursor.execute('CALL sp_list_user()')
+                    result= cursor.fetchall()
+                    print(result)
 
-            with connection.cursor() as cursor:
-                cursor.execute('Select * from users')
-                result= cursor.fetchall()
-                print(result)
-
-                connection.close()
-                return 'Este es el método get, se ve en consola'
+                    # connection.close()
+                    return 'Este es el método get, se ve en consola'
             
         except Exception as ex:
             print(ex)
