@@ -41,8 +41,7 @@ class UsersService():
 
                 encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
 
-                cursor.execute("insert into users(id_user, name_usuario, password, fk_id_type_user, fk_dni)" + 
-                               "values ('{0}', '{1}', '{2}', '{3}','{4}');".format(id_user, name_usuario, encripted_password, fk_id_type_user, fk_dni))
+                cursor.execute("CAll sp_add_user('{0}', '{1}', '{2}', '{3}','{4}');".format(id_user, name_usuario, encripted_password, fk_id_type_user, fk_dni))
                 connection.commit()
 
                 connection.close()
