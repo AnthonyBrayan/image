@@ -54,30 +54,29 @@ class UsersService():
     def put_user(cls, user:Users):
         try:
             connection= get_connection()
+            
+            with connection:
+                with connection.cursor() as cursor:
+                    id_user = user.id_user
+                    name_usuario= user.name_usuario
+                    password = user.password
+                    fk_id_type_user= user.fk_id_type_user
+                    fk_dni = user.fk_dni
 
-            with connection.cursor() as cursor:
-                id_user = user.id_user
-                name_usuario= user.name_usuario
-                password = user.password
-                fk_id_type_user= user.fk_id_type_user
-                fk_dni = user.fk_dni
+                    encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
 
-                encripted_password= generate_password_hash(password, 'pbkdf2:sha256',30)
+                    # Placeholders parametrizados: Create for sql query.
+                    sql= """
+                    CALL sp_put_user(%s,%s,%s,%s,%s)
+                    """
 
-                # Placeholders parametrizados: Create for sql query.
-                sql= """
-                UPDATE users 
-                SET name_usuario = %s, password = %s, fk_id_type_user = %s, fk_dni = %s 
-                WHERE id_user = %s;
-                """
+                    values = (name_usuario, encripted_password, fk_id_type_user, fk_dni, id_user)
 
-                values = (name_usuario, encripted_password, fk_id_type_user, fk_dni, id_user)
+                    cursor.execute(sql,values)
 
-                cursor.execute(sql,values)
+                    connection.commit()
 
-                connection.commit()
-
-                connection.close()
+                    # connection.close()
                 return 'Este es el método put, se imprime en consola'
             
         except Exception as ex:
@@ -88,19 +87,20 @@ class UsersService():
             try:
                 connection= get_connection()
 
-                with connection.cursor() as cursor:
+                with connection:
+                    with connection.cursor() as cursor:
 
-                    sql = """
-                        DELETE FROM users WHERE users.id_user = %s
+                        sql = """
+                            DELETE FROM users WHERE users.id_user = %s
 
-                          """
-                    values=(id_user)
+                            """
+                        values=(id_user)
 
-                    cursor.execute(sql,values)
-                    connection.commit()
-                    
-                connection.close()
+                        cursor.execute(sql,values)
+                        connection.commit()
+                        
+                    # connection.close()
 
-                return 'Este es el método delete, se imprime en consola'
+                    return 'Este es el método delete, se imprime en consola'
             except Exception as ex:
                 print(ex)
