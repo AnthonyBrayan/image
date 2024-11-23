@@ -91,7 +91,7 @@ class UsersService():
                     with connection.cursor() as cursor:
 
                         sql = """
-                            DELETE FROM users WHERE users.id_user = %s
+                            CALL sp_delete_user(%s)
 
                             """
                         values=(id_user)
