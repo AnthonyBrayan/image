@@ -70,7 +70,7 @@ def put_users():
         put_user= UsersService.put_user(user)
         print(put_user)
 
-        return 'Esto en la página'
+        return jsonify({"message": "Usuario actualizado"})
 
     except Exception as ex:
         print(ex)
