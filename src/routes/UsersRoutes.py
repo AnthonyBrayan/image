@@ -49,17 +49,33 @@ def post_users():
 @main.route('/',methods=['PUT'])
 def put_users():
 
-    id_user = request.json['id_user']
-    name_usuario= request.json['name_usuario']
-    password = request.json['password']
-    fk_id_type_user = request.json['fk_id_type_user']
-    fk_dni = request.json['fk_dni']
+    try:
+        required_fields = ['id_user','name_usuario', 'password', 'fk_id_type_user', 'fk_dni']
+        errors = []
 
-    user= (Users(id_user,name_usuario, password, fk_id_type_user, fk_dni))
-    put_user= UsersService.put_user(user)
-    print(put_user)
+        for field in required_fields:
+            if field not in request.json:
+                errors.append(f"{field} es obligatorio")
 
-    return 'Esto en la página'
+        if errors:
+            return jsonify({"errors": errors}), 400
+
+        id_user = request.json['id_user']
+        name_usuario= request.json['name_usuario']
+        password = request.json['password']
+        fk_id_type_user = request.json['fk_id_type_user']
+        fk_dni = request.json['fk_dni']
+
+        user= (Users(id_user,name_usuario, password, fk_id_type_user, fk_dni))
+        put_user= UsersService.put_user(user)
+        print(put_user)
+
+        return 'Esto en la página'
+
+    except Exception as ex:
+        print(ex)
+        response = jsonify({'message': 'Internal Server Error'})
+        return response, 500
 
 @main.route('/',methods=['DELETE'])
 def delete_users():
