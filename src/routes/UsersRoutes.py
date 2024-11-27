@@ -80,9 +80,25 @@ def put_users():
 @main.route('/',methods=['DELETE'])
 def delete_users():
 
-    id_user = request.json['id_user']
+    try:
+        requered_field=['id_user']
+        errors=[]
 
-    delete_user=UsersService.delete_user(id_user)
-    print(delete_user)
+        for field in requered_field:
+            if field not in request.json:
+                errors.append(f"{field} es obligatorio.")
 
-    return 'Esto se ve en la página, DELETE'
+        if errors:
+            return jsonify({"errors": errors}), 400
+
+        id_user = request.json['id_user']
+
+        delete_user=UsersService.delete_user(id_user)
+        print(delete_user)
+
+        return jsonify({"message": "Usuario eliminado"})
+
+    except Exception as ex:
+        print(ex)
+        response = jsonify({'message': 'Internal Server Error'})
+        return response, 500
