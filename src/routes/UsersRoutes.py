@@ -9,9 +9,9 @@ main = Blueprint('users_blueprint',__name__)
 def get_users():
 
     try:
-        UsersService.get_user()
+        user = UsersService.get_user()
         print('Esto se imprime en consola')
-        return 'Esto en la página'
+        return jsonify({'success': True, 'users':user})
     
     except Exception as ex:
      print(ex)

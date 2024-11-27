@@ -18,10 +18,8 @@ class UsersService():
                 with connection.cursor() as cursor:
                     cursor.execute('CALL sp_list_user()')
                     result= cursor.fetchall()
-                    print(result)
 
-                    # connection.close()
-                    return 'Este es el método get, se ve en consola'
+                    return result
             
         except Exception as ex:
             print(ex)
