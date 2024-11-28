@@ -36,10 +36,15 @@ def post_users():
         fk_dni = request.json['fk_dni']
 
         user= (Users(None,name_usuario, password, fk_id_type_user, fk_dni))
-        post_user= UsersService.post_user(user)
-        print(post_user)
+        service_response= UsersService.post_user(user)
+        print(service_response)
 
-        return jsonify({"message": "Usuario registrado"})
+        # return jsonify({"message": "Usuario registrado"})
+                # Manejar respuesta del servicio
+        if service_response['status'] == 'success':
+            return jsonify({"message": service_response['message']}), 201
+        else:
+            return jsonify({"message": service_response['message']}), 500
     
     except Exception as ex:
      print(ex)
