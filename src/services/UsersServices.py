@@ -20,10 +20,14 @@ class UsersService():
                     cursor.execute('CALL sp_list_user()')
                     result= cursor.fetchall()
 
-                    return result
+            if result:
+                return {"status": "success", "data": result}
+            else:
+                return {"status": "success", "data": [], "message": "No hay usuarios disponibles"}
             
         except Exception as ex:
             print(ex)
+            return {"status": "error", "message": "Error al mostrar usuarios"}
     
     @classmethod
     def post_user(cls, user:Users):
@@ -49,14 +53,10 @@ class UsersService():
                     cursor.execute(sql, values)
                     connection.commit()
 
-                    # response = jsonify({"message": "Usuario registrado exitosamente"})
-                    # return response, 201
                     return {"status": "success", "message": "Usuario registrado exitosamente"}
             
         except Exception as ex:
             print(ex)
-            # response = jsonify({'message': 'Internal Server Error'})
-            # return response, 500
             return {"status": "error", "message": "Error al registrar el usuario"}
 
     @classmethod

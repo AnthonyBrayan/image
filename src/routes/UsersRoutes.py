@@ -9,12 +9,21 @@ main = Blueprint('users_blueprint',__name__)
 def get_users():
 
     try:
-        user = UsersService.get_user()
-        print('Esto se imprime en consola')
-        return jsonify({'success': True, 'users':user})
+        service_response = UsersService.get_user()
+
+        if service_response['status'] == 'success':
+
+            if service_response.get('data'):
+                return jsonify({"success": True, "users": service_response['data']}), 200
+            else:
+                return jsonify({"success": True, "message": service_response.get('message')}), 204
+        else:
+            return jsonify({"success": False, "message": service_response['message']}), 500
     
     except Exception as ex:
      print(ex)
+     response = jsonify({'message': 'Internal Server Error'})
+     return response, 500
 
 @main.route('/',methods=['POST'])
 def post_users():
