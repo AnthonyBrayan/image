@@ -85,11 +85,14 @@ class UsersService():
 
                     connection.commit()
 
-                    # connection.close()
-                return 'Este es el método put, se imprime en consola'
+                    if cursor.rowcount > 0:
+                        return {"status": "success", "message": "Usuario actualizado exitosamente"}
+                    else:
+                        return {"status": "error", "message": "No se encontró el usuario para actualizar"}
             
         except Exception as ex:
             print(ex)
+            return {"status": "error", "message": "Error al actualizar el usuario"}
 
     @classmethod
     def delete_user(cls, id_user: int):

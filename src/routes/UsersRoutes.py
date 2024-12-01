@@ -48,8 +48,6 @@ def post_users():
         service_response= UsersService.post_user(user)
         print(service_response)
 
-        # return jsonify({"message": "Usuario registrado"})
-                # Manejar respuesta del servicio
         if service_response['status'] == 'success':
             return jsonify({"message": service_response['message']}), 201
         else:
@@ -81,15 +79,17 @@ def put_users():
         fk_dni = request.json['fk_dni']
 
         user= (Users(id_user,name_usuario, password, fk_id_type_user, fk_dni))
-        put_user= UsersService.put_user(user)
-        print(put_user)
+        service_response= UsersService.put_user(user)
 
-        return jsonify({"message": "Usuario actualizado"})
+        # Construir respuesta HTTP
+        if service_response['status'] == 'success':
+            return jsonify(service_response), 200
+        else:
+            return jsonify(service_response), 404
 
     except Exception as ex:
         print(ex)
-        response = jsonify({'message': 'Internal Server Error'})
-        return response, 500
+        return jsonify({"message": "Internal Server Error"}), 500
 
 @main.route('/',methods=['DELETE'])
 def delete_users():
