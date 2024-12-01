@@ -53,7 +53,10 @@ class UsersService():
                     cursor.execute(sql, values)
                     connection.commit()
 
-                    return {"status": "success", "message": "Usuario registrado exitosamente"}
+                    if cursor.rowcount > 0:
+                        return {"status": "success", "message": "Usuario registrado exitosamente"}
+                    else:
+                        return {"status": "error", "message": "No se pudo registrar el usuario"}
             
         except Exception as ex:
             print(ex)

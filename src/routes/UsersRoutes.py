@@ -49,9 +49,9 @@ def post_users():
         print(service_response)
 
         if service_response['status'] == 'success':
-            return jsonify({"message": service_response['message']}), 201
+            return jsonify(service_response), 201
         else:
-            return jsonify({"message": service_response['message']}), 500
+            return jsonify(service_response), 400
     
     except Exception as ex:
      print(ex)
