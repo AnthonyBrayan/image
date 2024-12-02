@@ -113,9 +113,12 @@ class UsersService():
 
                         cursor.execute(sql,values)
                         connection.commit()
-                        
-                    # connection.close()
 
-                    return 'Este es el método delete, se imprime en consola'
+                if cursor.rowcount > 0:
+                    return {"status" : "success", "message" : "Usuario eliminado exitosamente"}
+                else:
+                    return {"status" : "not_found", "message" : "No se encontró el usuario para eliminar"}
+
             except Exception as ex:
                 print(ex)
+                return {"status":"error", "message":"Error al eliminar usuario"}

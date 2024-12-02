@@ -107,12 +107,15 @@ def delete_users():
 
         id_user = request.json['id_user']
 
-        delete_user=UsersService.delete_user(id_user)
-        print(delete_user)
+        service_response= UsersService.delete_user(id_user)
 
-        return jsonify({"message": "Usuario eliminado"})
+        if service_response['status'] == 'success':
+            return jsonify(service_response), 200
+        elif service_response ['status'] == 'not_found':
+            return jsonify(service_response), 404
+        else:
+            return jsonify({"status":"error", "message":"No se pudo eliminar el usuario"}, 400)
 
     except Exception as ex:
         print(ex)
-        response = jsonify({'message': 'Internal Server Error'})
-        return response, 500
+        return jsonify({"status": "error", "message": "Internal Server Error"}, 500)
