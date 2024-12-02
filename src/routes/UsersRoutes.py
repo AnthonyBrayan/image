@@ -22,8 +22,7 @@ def get_users():
     
     except Exception as ex:
      print(ex)
-     response = jsonify({'message': 'Internal Server Error'})
-     return response, 500
+     return ({"status":"error", "message":"Internal Server Error"}, 500)
 
 @main.route('/',methods=['POST'])
 def post_users():
@@ -55,8 +54,7 @@ def post_users():
     
     except Exception as ex:
      print(ex)
-     response = jsonify({'message': 'Internal Server Error'})
-     return response, 500
+     return jsonify({"status":"error", "message":"Internal Server Error"}, 500)
     
 @main.route('/',methods=['PUT'])
 def put_users():
@@ -89,7 +87,7 @@ def put_users():
 
     except Exception as ex:
         print(ex)
-        return jsonify({"message": "Internal Server Error"}), 500
+        return jsonify({"status":"error", "message": "Internal Server Error"}), 500
 
 @main.route('/',methods=['DELETE'])
 def delete_users():
