@@ -1,6 +1,11 @@
 from src.database.db_mysql import get_connection;
 from flask import jsonify
 
+import traceback
+
+#Logger
+from src.utils.Logger import Logger
+
 #Model
 from src.models.UsersModel import Users
 
@@ -26,7 +31,8 @@ class UsersService():
                 return {"status": "success", "data": [], "message": "No hay usuarios disponibles"}
             
         except Exception as ex:
-            print(ex)
+            Logger.add_to_log('error', str(ex))
+            Logger.add_to_log('error',traceback.format_exc())
             return {"status": "error", "message": "Error al mostrar usuarios"}
     
     @classmethod
