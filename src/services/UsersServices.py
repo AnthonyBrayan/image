@@ -1,5 +1,4 @@
 from src.database.db_mysql import get_connection;
-from flask import jsonify
 
 import traceback
 

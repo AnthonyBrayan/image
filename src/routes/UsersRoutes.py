@@ -1,6 +1,11 @@
 from flask import Blueprint, jsonify,request
 
+import traceback
+
+from src.utils.Logger import Logger
+
 from src.services.UsersServices import UsersService
+
 from src.models.UsersModel import Users
 
 main = Blueprint('users_blueprint',__name__)
@@ -21,7 +26,8 @@ def get_users():
             return jsonify({"success": False, "message": service_response['message']}), 500
     
     except Exception as ex:
-     print(ex)
+     Logger.add_to_log('error', str(ex))
+     Logger.add_to_log('error', traceback.format_exc())
      return ({"status":"error", "message":"Internal Server Error"}, 500)
 
 @main.route('/',methods=['POST'])
@@ -53,7 +59,8 @@ def post_users():
             return jsonify(service_response), 400
     
     except Exception as ex:
-     print(ex)
+     Logger.add_to_log('error', str(ex))
+     Logger.add_to_log('error', traceback.format_exc())
      return jsonify({"status":"error", "message":"Internal Server Error"}, 500)
     
 @main.route('/',methods=['PUT'])
@@ -86,7 +93,8 @@ def put_users():
             return jsonify(service_response), 404
 
     except Exception as ex:
-        print(ex)
+        Logger.add_to_log('error', str(ex))
+        Logger.add_to_log('error', traceback.format_exc())
         return jsonify({"status":"error", "message": "Internal Server Error"}), 500
 
 @main.route('/',methods=['DELETE'])
@@ -115,5 +123,6 @@ def delete_users():
             return jsonify({"status":"error", "message":"No se pudo eliminar el usuario"}, 400)
 
     except Exception as ex:
-        print(ex)
+        Logger.add_to_log('error', str(ex))
+        Logger.add_to_log('error', traceback.format_exc())
         return jsonify({"status": "error", "message": "Internal Server Error"}, 500)
