@@ -65,7 +65,8 @@ class UsersService():
                         return {"status": "error", "message": "No se pudo registrar el usuario"}
             
         except Exception as ex:
-            print(ex)
+            Logger.add_to_log('error', str(ex))
+            Logger.add_to_log('error', traceback.format_exc())
             return {"status": "error", "message": "Error al registrar el usuario"}
 
     @classmethod
@@ -100,7 +101,8 @@ class UsersService():
                         return {"status": "error", "message": "No se encontró el usuario para actualizar"}
             
         except Exception as ex:
-            print(ex)
+            Logger.add_to_log('error', str(ex))
+            Logger.add_to_log('error', traceback.format_exc())
             return {"status": "error", "message": "Error al actualizar el usuario"}
 
     @classmethod
@@ -126,5 +128,6 @@ class UsersService():
                     return {"status" : "not_found", "message" : "No se encontró el usuario para eliminar"}
 
             except Exception as ex:
-                print(ex)
+                Logger.add_to_log('error', str(ex))
+                Logger.add_to_log('error', traceback.format_exc())
                 return {"status":"error", "message":"Error al eliminar usuario"}
