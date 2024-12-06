@@ -16,23 +16,34 @@ class UsersService():
     @classmethod
     def get_user(cls):
         try:
+            Logger.add_to_log('info', 'Intentando obtener la lista de usuarios')
+
             connection= get_connection()
-            print(connection)
+
+            Logger.add_to_log('info', 'Conexión a la base de datos establecida')
             
             with connection:
                 with connection.cursor() as cursor:
                     cursor.execute('CALL sp_list_user()')
                     result= cursor.fetchall()
+                    # Logger.add_to_log('debug', f'Resultado crudo desde la base de datos: {result}')
+                    # Logger.add_to_log('debug', f'Tipo de resultado: {type(result)}')
 
-            if result:
+            
+            if result and isinstance(result, (list)):
+                Logger.add_to_log('info', f'{len(result)} usuarios encontrados')
                 return {"status": "success", "data": result}
             else:
+                Logger.add_to_log('warning', 'No se encontraron usuarios')
                 return {"status": "success", "data": [], "message": "No hay usuarios disponibles"}
             
         except Exception as ex:
-            Logger.add_to_log('error', str(ex))
+            Logger.add_to_log('error', f'Error en get_user: {str(ex)}')
             Logger.add_to_log('error',traceback.format_exc())
             return {"status": "error", "message": "Error al mostrar usuarios"}
+        
+        finally:
+            Logger.add_to_log('info',f'Respuesta generada y enviada al cliente')
     
     @classmethod
     def post_user(cls, user:Users):
