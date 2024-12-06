@@ -30,7 +30,7 @@ class UsersService():
                     # Logger.add_to_log('debug', f'Tipo de resultado: {type(result)}')
 
             
-            if result and isinstance(result, (list)):
+            if result and isinstance(result, tuple):
                 Logger.add_to_log('info', f'{len(result)} usuarios encontrados')
                 return {"status": "success", "data": result}
             else:
