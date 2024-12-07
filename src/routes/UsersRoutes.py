@@ -19,16 +19,19 @@ def get_users():
         if service_response['status'] == 'success':
 
             if service_response.get('data'):
+                Logger.add_to_log('info','Usuarios obtenidos con éxito')
                 return jsonify({"success": True, "users": service_response['data']}), 200
             else:
+                Logger.add_to_log('info','No hay usuarios disponibles')
                 return jsonify({"success": True, "message": service_response.get('message')}), 204
         else:
+            Logger.add_to_log('warning',f'Error en servicio: {service_response['message']}')
             return jsonify({"success": False, "message": service_response['message']}), 500
     
     except Exception as ex:
-     Logger.add_to_log('error', str(ex))
+     Logger.add_to_log('error', f'Error no manejado {str(ex)}')
      Logger.add_to_log('error', traceback.format_exc())
-     return ({"status":"error", "message":"Internal Server Error"}, 500)
+     return jsonify({"status":"error", "message":"Internal Server Error"}, 500)
 
 @main.route('/',methods=['POST'])
 def post_users():
