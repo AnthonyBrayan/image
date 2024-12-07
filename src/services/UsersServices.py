@@ -26,11 +26,8 @@ class UsersService():
                 with connection.cursor() as cursor:
                     cursor.execute('CALL sp_list_user()')
                     result= cursor.fetchall()
-                    # Logger.add_to_log('debug', f'Resultado crudo desde la base de datos: {result}')
-                    # Logger.add_to_log('debug', f'Tipo de resultado: {type(result)}')
-
             
-            if result and isinstance(result, tuple):
+            if result:
                 Logger.add_to_log('info', f'{len(result)} usuarios encontrados')
                 return {"status": "success", "data": result}
             else:
