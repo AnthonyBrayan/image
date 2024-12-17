@@ -62,7 +62,7 @@ def post_users():
             return jsonify(service_response), 400
     
     except Exception as ex:
-     Logger.add_to_log('error', str(ex))
+     Logger.add_to_log('error', f'Error no manejado {str(ex)}')
      Logger.add_to_log('error', traceback.format_exc())
      return jsonify({"status":"error", "message":"Internal Server Error"}, 500)
     
@@ -96,7 +96,7 @@ def put_users():
             return jsonify(service_response), 404
 
     except Exception as ex:
-        Logger.add_to_log('error', str(ex))
+        Logger.add_to_log('error', f'Error no manejado {str(ex)}')
         Logger.add_to_log('error', traceback.format_exc())
         return jsonify({"status":"error", "message": "Internal Server Error"}), 500
 
@@ -126,6 +126,6 @@ def delete_users():
             return jsonify({"status":"error", "message":"No se pudo eliminar el usuario"}, 400)
 
     except Exception as ex:
-        Logger.add_to_log('error', str(ex))
+        Logger.add_to_log('error', f'Error no manejado {str(ex)}')
         Logger.add_to_log('error', traceback.format_exc())
         return jsonify({"status": "error", "message": "Internal Server Error"}, 500)
